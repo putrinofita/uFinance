@@ -1,0 +1,247 @@
+{
+    "\/api\/summary": {
+        "status": "success",
+        "data": {
+            "saldo": 8000,
+            "total_income": 10000,
+            "total_expense": 2000,
+            "income": 10000,
+            "expense": 2000,
+            "balance": 8000,
+            "remaining_days": 23,
+            "calendar_remaining_days": 24,
+            "is_custom_days": false,
+            "daily_budget": 347.83,
+            "period": {
+                "id": 2,
+                "start_date": "2026-10-01",
+                "end_date": "2026-10-31",
+                "total_days": 31,
+                "sisa_hari": 23,
+                "budget_mode": "auto",
+                "daily_budget": 347.83,
+                "linked_income_id": null,
+                "periode_aktif": true,
+                "periode_status": "ACTIVE"
+            },
+            "sisa_hari": 23,
+            "budget_mode": "auto",
+            "period_status": "ACTIVE",
+            "today_expense": 2000,
+            "alert_status": "WARNING",
+            "status_today": "warning"
+        },
+        "message": "Ringkasan berhasil dihitung."
+    },
+    "\/api\/stats?period=daily": {
+        "status": "success",
+        "data": {
+            "series": [
+                {
+                    "label": "2026-10-01",
+                    "income": "10000.00",
+                    "expense": "0.00"
+                },
+                {
+                    "label": "2026-10-08",
+                    "income": "0.00",
+                    "expense": "2000.00"
+                }
+            ],
+            "categories": [
+                {
+                    "category": "Bills",
+                    "total": "2000.00"
+                }
+            ]
+        },
+        "message": "Statistik berhasil dimuat."
+    },
+    "\/api\/periods\/active": {
+        "status": "success",
+        "data": {
+            "id": 2,
+            "start_date": "2026-10-01",
+            "end_date": "2026-10-31",
+            "total_days": 31,
+            "budget_mode": "auto",
+            "daily_budget": 347.83,
+            "linked_income_id": null,
+            "is_active": 1,
+            "created_at": "2026-10-08 09:08:00",
+            "updated_at": "2026-10-08 09:08:00",
+            "sisa_hari": 23,
+            "periode_aktif": true,
+            "periode_status": "ACTIVE"
+        },
+        "message": "Periode aktif berhasil dimuat."
+    },
+    "\/api\/goals": {
+        "status": "success",
+        "data": [
+            {
+                "id": 2,
+                "name": "Test Goal",
+                "target_amount": "10000.00",
+                "current_amount": "5000.00",
+                "deadline": "2026-12-31",
+                "status": "active",
+                "created_at": "2026-10-08 09:08:00",
+                "updated_at": "2026-10-08 09:08:00"
+            },
+            {
+                "id": 1,
+                "name": "Test Goal",
+                "target_amount": "10000.00",
+                "current_amount": "5000.00",
+                "deadline": "2026-12-31",
+                "status": "active",
+                "created_at": "2026-10-08 09:07:47",
+                "updated_at": "2026-10-08 09:07:47"
+            }
+        ],
+        "message": "Goals berhasil dimuat."
+    },
+    "\/api\/transactions": {
+        "status": "success",
+        "data": [
+            {
+                "id": 4,
+                "type": "expense",
+                "amount": "1000.00",
+                "date": "2026-10-08",
+                "category_id": 4,
+                "category": "Bills",
+                "note": "test expense"
+            },
+            {
+                "id": 2,
+                "type": "expense",
+                "amount": "1000.00",
+                "date": "2026-10-08",
+                "category_id": 4,
+                "category": "Bills",
+                "note": "test expense"
+            },
+            {
+                "id": 3,
+                "type": "income",
+                "amount": "5000.00",
+                "date": "2026-10-01",
+                "category_id": 4,
+                "category": "Bills",
+                "note": "test income"
+            },
+            {
+                "id": 1,
+                "type": "income",
+                "amount": "5000.00",
+                "date": "2026-10-01",
+                "category_id": 4,
+                "category": "Bills",
+                "note": "test income"
+            }
+        ],
+        "message": "Transaksi berhasil dimuat."
+    },
+    "\/api\/recurring": {
+        "status": "success",
+        "data": [
+            {
+                "id": 1,
+                "amount": "500.00",
+                "interval_days": 7,
+                "start_date": "2026-10-01",
+                "category_id": 4,
+                "note": "test recurring",
+                "category": "Bills"
+            },
+            {
+                "id": 2,
+                "amount": "500.00",
+                "interval_days": 7,
+                "start_date": "2026-10-01",
+                "category_id": 4,
+                "note": "test recurring",
+                "category": "Bills"
+            }
+        ],
+        "message": "Recurring transactions berhasil dimuat."
+    },
+    "\/api\/categories": {
+        "status": "success",
+        "data": [
+            {
+                "id": 4,
+                "name": "Bills"
+            },
+            {
+                "id": 7,
+                "name": "Entertainment"
+            },
+            {
+                "id": 2,
+                "name": "Food"
+            },
+            {
+                "id": 6,
+                "name": "Health"
+            },
+            {
+                "id": 9,
+                "name": "Other"
+            },
+            {
+                "id": 1,
+                "name": "Salary"
+            },
+            {
+                "id": 8,
+                "name": "Savings"
+            },
+            {
+                "id": 5,
+                "name": "Shopping"
+            },
+            {
+                "id": 3,
+                "name": "Transport"
+            }
+        ],
+        "message": "Kategori berhasil dimuat."
+    },
+    "\/api\/calendar?month=2026-10": {
+        "status": "success",
+        "data": {
+            "2026-10-01": {
+                "total_income": 10000,
+                "total_expense": 0,
+                "net": 10000,
+                "has_income": true,
+                "has_expense": false
+            },
+            "2026-10-08": {
+                "total_income": 0,
+                "total_expense": 2000,
+                "net": -2000,
+                "has_income": false,
+                "has_expense": true
+            }
+        },
+        "message": "Data kalender berhasil dimuat."
+    },
+    "POST \/api\/goals": {
+        "status": "success",
+        "data": {
+            "id": 3
+        },
+        "message": "Goal ditambahkan."
+    },
+    "PUT \/api\/goals\/1": {
+        "status": "success",
+        "data": {
+            "id": 1
+        },
+        "message": "Goal diperbarui."
+    }
+}

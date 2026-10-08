@@ -6,6 +6,7 @@ use App\Http\Controllers\Concerns\RespondsWithJson;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Enums\TransactionType;
 
 class StatsController extends Controller
 {
@@ -40,7 +41,7 @@ class StatsController extends Controller
 
         $categories = DB::table('transactions as t')
             ->leftJoin('categories as c', 'c.id', '=', 't.category_id')
-            ->where('t.type', 'expense')
+            ->where('t.type', TransactionType::Expense->value)
             ->selectRaw("COALESCE(c.name, 'Uncategorized') AS category, COALESCE(SUM(t.amount), 0) AS total")
             ->groupBy('category')
             ->orderByDesc('total')

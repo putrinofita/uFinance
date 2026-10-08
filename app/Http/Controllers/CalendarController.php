@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Enums\TransactionType;
 
 class CalendarController extends Controller
 {
@@ -23,12 +24,14 @@ class CalendarController extends Controller
         $start = Carbon::createFromFormat('!Y-m', $month)->startOfMonth();
         $end   = $start->copy()->endOfMonth();
 
+        $incomeEnum = TransactionType::Income->value;
+        $expenseEnum = TransactionType::Expense->value;
         $rows = DB::table('transactions')
             ->selectRaw("
                 date,
-                COALESCE(SUM(CASE WHEN type = 'income'  THEN amount ELSE 0 END), 0) AS total_income,
-                COALESCE(SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END), 0) AS total_expense,
-                COALESCE(SUM(CASE WHEN type = 'income' THEN amount WHEN type = 'expense' THEN -amount ELSE 0 END), 0) AS net
+                COALESCE(SUM(CASE WHEN type = '{$incomeEnum}'  THEN amount ELSE 0 END), 0) AS total_income,
+                COALESCE(SUM(CASE WHEN type = '{$expenseEnum}' THEN amount ELSE 0 END), 0) AS total_expense,
+                COALESCE(SUM(CASE WHEN type = '{$incomeEnum}' THEN amount WHEN type = '{$expenseEnum}' THEN -amount ELSE 0 END), 0) AS net
             ")
             ->whereBetween('date', [$start->toDateString(), $end->toDateString()])
             ->groupBy('date')

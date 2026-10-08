@@ -5,15 +5,20 @@ namespace App\Services;
 use App\Models\FinancialPeriod;
 use DateTimeImmutable;
 use Illuminate\Support\Facades\DB;
+use App\Enums\BudgetMode;
+use App\Enums\PeriodStatus;
+use App\Enums\TransactionType;
 
 class FinanceService
 {
     /** Total pemasukan & pengeluaran seluruh transaksi. */
     public function totals(): array
     {
+        $incomeEnum = TransactionType::Income->value;
+        $expenseEnum = TransactionType::Expense->value;
         $row = DB::table('transactions')->selectRaw("
-            COALESCE(SUM(CASE WHEN type = 'income'  THEN amount ELSE 0 END), 0) AS income,
-            COALESCE(SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END), 0) AS expense
+            COALESCE(SUM(CASE WHEN type = '{$incomeEnum}'  THEN amount ELSE 0 END), 0) AS income,
+            COALESCE(SUM(CASE WHEN type = '{$expenseEnum}' THEN amount ELSE 0 END), 0) AS expense
         ")->first();
 
         return ['income' => (float) $row->income, 'expense' => (float) $row->expense];
@@ -47,18 +52,19 @@ class FinanceService
         }
 
         $today = new DateTimeImmutable('today');
-        $start = new DateTimeImmutable($period->start_date);
-        $end   = new DateTimeImmutable($period->end_date);
+        $start = new DateTimeImmutable($period->start_date->format('Y-m-d'));
+        $end   = new DateTimeImmutable($period->end_date->format('Y-m-d'));
 
-        $sisaHari  = max(0, $this->daysUntil($period->end_date));
+        $sisaHari  = max(0, $this->daysUntil($period->end_date->format('Y-m-d')));
         $isInRange = $today >= $start && $today <= $end;
-        $status    = $isInRange ? 'ACTIVE' : ($today > $end ? 'EXPIRED' : 'NO_PERIOD');
+        $status    = $isInRange ? PeriodStatus::Active->value : ($today > $end ? PeriodStatus::Expired->value : PeriodStatus::Pending->value);
 
-        $dailyBudget = $period->budget_mode === 'auto'
+        $dailyBudget = $period->budget_mode === BudgetMode::Auto
             ? ($sisaHari > 0 ? $balance / $sisaHari : 0)
             : (float) $period->daily_budget;
 
         $payload = $period->toArray();
+        $payload['budget_mode']     = $period->budget_mode->value;
         $payload['sisa_hari']       = $sisaHari;
         $payload['periode_aktif']   = $status === 'ACTIVE';
         $payload['periode_status']  = $status;

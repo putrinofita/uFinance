@@ -6,6 +6,7 @@ use App\Http\Controllers\Concerns\RespondsWithJson;
 use App\Models\Goal;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Enums\GoalStatus;
 
 class GoalController extends Controller
 {
@@ -96,6 +97,6 @@ class GoalController extends Controller
 
     private function status(float $current, float $target): string
     {
-        return $target > 0 && $current >= $target ? 'achieved' : 'active';
+        return $target > 0 && $current >= $target ? GoalStatus::Achieved->value : GoalStatus::Active->value;
     }
 }

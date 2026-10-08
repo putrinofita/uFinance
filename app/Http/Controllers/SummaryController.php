@@ -9,6 +9,9 @@ use Carbon\Carbon;
 use DateTimeImmutable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Enums\TransactionType;
+use App\Enums\BudgetMode;
+use App\Enums\PeriodStatus;
 
 class SummaryController extends Controller
 {
@@ -20,7 +23,7 @@ class SummaryController extends Controller
         $balance = $income - $expense;
 
         $today = Carbon::today();
-        $todayExpense = (float) Transaction::where('type', 'expense')
+        $todayExpense = (float) Transaction::where('type', TransactionType::Expense->value)
             ->where('date', $today->toDateString())
             ->sum('amount');
 
@@ -31,27 +34,27 @@ class SummaryController extends Controller
 
         $activePeriod = $finance->activePeriod();
         $period       = null;
-        $periodStatus = 'NO_PERIOD';
-        $alertStatus  = 'NO_PERIOD';
+        $periodStatus = PeriodStatus::NoPeriod->value;
+        $alertStatus  = PeriodStatus::NoPeriod->value;
 
         if ($activePeriod) {
             $now   = new DateTimeImmutable('today');
-            $start = new DateTimeImmutable($activePeriod->start_date);
-            $end   = new DateTimeImmutable($activePeriod->end_date);
+            $start = new DateTimeImmutable($activePeriod->start_date->format('Y-m-d'));
+            $end   = new DateTimeImmutable($activePeriod->end_date->format('Y-m-d'));
 
-            $periodRemainingDays = max(0, $finance->daysUntil($activePeriod->end_date));
-            $periodStatus = ($now >= $start && $now <= $end) ? 'ACTIVE' : ($now > $end ? 'EXPIRED' : 'PENDING');
-            $periodDailyBudget = $activePeriod->budget_mode === 'auto'
+            $periodRemainingDays = max(0, $finance->daysUntil($activePeriod->end_date->format('Y-m-d')));
+            $periodStatus = ($now >= $start && $now <= $end) ? PeriodStatus::Active->value : ($now > $end ? PeriodStatus::Expired->value : PeriodStatus::Pending->value);
+            $periodDailyBudget = $activePeriod->budget_mode === BudgetMode::Auto
                 ? ($periodRemainingDays > 0 ? $balance / $periodRemainingDays : 0)
                 : (float) $activePeriod->daily_budget;
 
             $period = [
                 'id'               => (int) $activePeriod->id,
-                'start_date'       => $activePeriod->start_date,
-                'end_date'         => $activePeriod->end_date,
+                'start_date'       => $activePeriod->start_date->format('Y-m-d'),
+                'end_date'         => $activePeriod->end_date->format('Y-m-d'),
                 'total_days'       => (int) $activePeriod->total_days,
                 'sisa_hari'        => $periodRemainingDays,
-                'budget_mode'      => $activePeriod->budget_mode,
+                'budget_mode'      => $activePeriod->budget_mode->value,
                 'daily_budget'     => round($periodDailyBudget, 2),
                 'linked_income_id' => $activePeriod->linked_income_id === null ? null : (int) $activePeriod->linked_income_id,
                 'periode_aktif'    => $periodStatus === 'ACTIVE',
@@ -60,7 +63,7 @@ class SummaryController extends Controller
 
             $dailyBudget   = $periodDailyBudget;
             $remainingDays = $periodRemainingDays;
-            $alertStatus   = $periodStatus === 'ACTIVE'
+            $alertStatus   = $periodStatus === PeriodStatus::Active->value
                 ? ($todayExpense > $periodDailyBudget ? 'WARNING' : 'SAFE')
                 : $periodStatus;
         } else {

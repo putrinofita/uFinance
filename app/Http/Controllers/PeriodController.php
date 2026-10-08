@@ -9,6 +9,7 @@ use DateTimeImmutable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Enums\PeriodStatus;
 
 class PeriodController extends Controller
 {
@@ -25,7 +26,7 @@ class PeriodController extends Controller
 
         return $this->success($period ?: [
             'periode_aktif'  => false,
-            'periode_status' => 'NO_PERIOD',
+            'periode_status' => PeriodStatus::NoPeriod->value,
             'sisa_hari'      => 0,
             'daily_budget'   => 0,
         ], $period ? 'Periode aktif berhasil dimuat.' : 'Tidak ada periode aktif.');
