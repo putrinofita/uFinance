@@ -28,13 +28,13 @@ class CalendarController extends Controller
         $expenseEnum = TransactionType::Expense->value;
         $rows = DB::table('transactions')
             ->selectRaw("
-                date,
-                COALESCE(SUM(CASE WHEN type = '{$incomeEnum}'  THEN amount ELSE 0 END), 0) AS total_income,
-                COALESCE(SUM(CASE WHEN type = '{$expenseEnum}' THEN amount ELSE 0 END), 0) AS total_expense,
-                COALESCE(SUM(CASE WHEN type = '{$incomeEnum}' THEN amount WHEN type = '{$expenseEnum}' THEN -amount ELSE 0 END), 0) AS net
+                transactions.date,
+                COALESCE(SUM(CASE WHEN transactions.type = '{$incomeEnum}'  THEN transactions.amount ELSE 0 END), 0) AS total_income,
+                COALESCE(SUM(CASE WHEN transactions.type = '{$expenseEnum}' THEN transactions.amount ELSE 0 END), 0) AS total_expense,
+                COALESCE(SUM(CASE WHEN transactions.type = '{$incomeEnum}' THEN transactions.amount WHEN transactions.type = '{$expenseEnum}' THEN -transactions.amount ELSE 0 END), 0) AS net
             ")
-            ->whereBetween('date', [$start->toDateString(), $end->toDateString()])
-            ->groupBy('date')
+            ->whereBetween('transactions.date', [$start->toDateString(), $end->toDateString()])
+            ->groupBy('transactions.date')
             ->orderBy('date')
             ->get();
 

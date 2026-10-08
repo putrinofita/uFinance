@@ -11,14 +11,17 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+use App\Models\Concerns\BelongsToUser;
+
 #[Fillable([
     'start_date', 'end_date', 'total_days', 'budget_mode',
-    'daily_budget', 'linked_income_id', 'is_active',
+    'daily_budget', 'linked_income_id', 'is_active', 'user_id'
 ])]
-#[Hidden(['active_flag'])]
 class FinancialPeriod extends Model
 {
-    use SerializesPlainDates;
+    protected $table = 'financial_periods';
+
+    use SerializesPlainDates, BelongsToUser;
 
     /**
      * @return array<string, string>

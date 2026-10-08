@@ -1,0 +1,181 @@
+{
+    "\/api\/summary": {
+        "status": "success",
+        "data": {
+            "saldo": 4000,
+            "total_income": 5000,
+            "total_expense": 1000,
+            "income": 5000,
+            "expense": 1000,
+            "balance": 4000,
+            "remaining_days": 23,
+            "calendar_remaining_days": 24,
+            "is_custom_days": false,
+            "daily_budget": 173.91,
+            "period": {
+                "id": 3,
+                "start_date": "2026-10-01",
+                "end_date": "2026-10-31",
+                "total_days": 31,
+                "sisa_hari": 23,
+                "budget_mode": "auto",
+                "daily_budget": 173.91,
+                "linked_income_id": null,
+                "periode_aktif": true,
+                "periode_status": "ACTIVE"
+            },
+            "sisa_hari": 23,
+            "budget_mode": "auto",
+            "period_status": "ACTIVE",
+            "today_expense": 1000,
+            "alert_status": "WARNING",
+            "status_today": "warning"
+        },
+        "message": "Ringkasan berhasil dihitung."
+    },
+    "\/api\/stats?period=daily": {
+        "status": "success",
+        "data": {
+            "series": [
+                {
+                    "label": "2026-10-01",
+                    "income": "5000.00",
+                    "expense": "0.00"
+                },
+                {
+                    "label": "2026-10-08",
+                    "income": "0.00",
+                    "expense": "1000.00"
+                }
+            ],
+            "categories": [
+                {
+                    "category": "Test Food",
+                    "total": "1000.00"
+                }
+            ]
+        },
+        "message": "Statistik berhasil dimuat."
+    },
+    "\/api\/periods\/active": {
+        "status": "success",
+        "data": {
+            "id": 3,
+            "user_id": 2,
+            "start_date": "2026-10-01",
+            "end_date": "2026-10-31",
+            "total_days": 31,
+            "budget_mode": "auto",
+            "daily_budget": 173.91,
+            "linked_income_id": null,
+            "is_active": 1,
+            "created_at": "2026-10-08 10:30:40",
+            "updated_at": "2026-10-08 10:30:40",
+            "active_flag": 1,
+            "sisa_hari": 23,
+            "periode_aktif": true,
+            "periode_status": "ACTIVE"
+        },
+        "message": "Periode aktif berhasil dimuat."
+    },
+    "\/api\/goals": {
+        "status": "success",
+        "data": [
+            {
+                "id": 5,
+                "user_id": 2,
+                "name": "Test Goal",
+                "target_amount": "10000.00",
+                "current_amount": "5000.00",
+                "deadline": "2026-12-31",
+                "status": "active",
+                "created_at": "2026-10-08 10:30:40",
+                "updated_at": "2026-10-08 10:30:40"
+            }
+        ],
+        "message": "Goals berhasil dimuat."
+    },
+    "\/api\/transactions": {
+        "status": "success",
+        "data": [
+            {
+                "id": 6,
+                "type": "expense",
+                "amount": "1000.00",
+                "date": "2026-10-08",
+                "category_id": 11,
+                "category": "Test Food",
+                "note": "test expense"
+            },
+            {
+                "id": 5,
+                "type": "income",
+                "amount": "5000.00",
+                "date": "2026-10-01",
+                "category_id": 11,
+                "category": "Test Food",
+                "note": "test income"
+            }
+        ],
+        "message": "Transaksi berhasil dimuat."
+    },
+    "\/api\/recurring": {
+        "status": "success",
+        "data": [
+            {
+                "id": 3,
+                "user_id": 2,
+                "type": "expense",
+                "amount": "500.00",
+                "interval_days": 7,
+                "start_date": "2026-10-01",
+                "category_id": 11,
+                "note": "test recurring",
+                "category": "Test Food"
+            }
+        ],
+        "message": "Recurring transactions berhasil dimuat."
+    },
+    "\/api\/categories": {
+        "status": "success",
+        "data": [
+            {
+                "id": 11,
+                "name": "Test Food"
+            }
+        ],
+        "message": "Kategori berhasil dimuat."
+    },
+    "\/api\/calendar?month=2026-10": {
+        "status": "success",
+        "data": {
+            "2026-10-01": {
+                "total_income": 5000,
+                "total_expense": 0,
+                "net": 5000,
+                "has_income": true,
+                "has_expense": false
+            },
+            "2026-10-08": {
+                "total_income": 0,
+                "total_expense": 1000,
+                "net": -1000,
+                "has_income": false,
+                "has_expense": true
+            }
+        },
+        "message": "Data kalender berhasil dimuat."
+    },
+    "POST \/api\/goals": {
+        "status": "success",
+        "data": {
+            "id": 6
+        },
+        "message": "Goal ditambahkan."
+    },
+    "PUT \/api\/goals\/1": {
+        "status": "error",
+        "data": null,
+        "message": "Goal tidak ditemukan."
+    }
+}

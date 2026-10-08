@@ -17,8 +17,8 @@ class FinanceService
         $incomeEnum = TransactionType::Income->value;
         $expenseEnum = TransactionType::Expense->value;
         $row = DB::table('transactions')->selectRaw("
-            COALESCE(SUM(CASE WHEN type = '{$incomeEnum}'  THEN amount ELSE 0 END), 0) AS income,
-            COALESCE(SUM(CASE WHEN type = '{$expenseEnum}' THEN amount ELSE 0 END), 0) AS expense
+            COALESCE(SUM(CASE WHEN transactions.type = '{$incomeEnum}'  THEN transactions.amount ELSE 0 END), 0) AS income,
+            COALESCE(SUM(CASE WHEN transactions.type = '{$expenseEnum}' THEN transactions.amount ELSE 0 END), 0) AS expense
         ")->first();
 
         return ['income' => (float) $row->income, 'expense' => (float) $row->expense];

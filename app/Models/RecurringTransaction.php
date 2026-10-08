@@ -9,10 +9,14 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['type', 'amount', 'interval_days', 'start_date', 'category_id', 'note'])]
+use App\Models\Concerns\BelongsToUser;
+
+#[Fillable(['type', 'amount', 'interval_days', 'start_date', 'category_id', 'note', 'user_id'])]
 class RecurringTransaction extends Model
 {
+    protected $table = 'recurring_transactions';
     public $timestamps = false;
+    use BelongsToUser;
 
     /**
      * @return array<string, string>

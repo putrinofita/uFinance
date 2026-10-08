@@ -31,9 +31,9 @@ class StatsController extends Controller
 
         $series = DB::table('transactions')
             ->selectRaw("
-                DATE_FORMAT(date, '{$format}') AS label,
-                COALESCE(SUM(CASE WHEN type = 'income'  THEN amount ELSE 0 END), 0) AS income,
-                COALESCE(SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END), 0) AS expense
+                DATE_FORMAT(transactions.date, '{$format}') AS label,
+                COALESCE(SUM(CASE WHEN transactions.type = '" . TransactionType::Income->value . "' THEN transactions.amount ELSE 0 END), 0) AS income,
+                COALESCE(SUM(CASE WHEN transactions.type = '" . TransactionType::Expense->value . "' THEN transactions.amount ELSE 0 END), 0) AS expense
             ")
             ->groupBy('label')
             ->orderBy('label')

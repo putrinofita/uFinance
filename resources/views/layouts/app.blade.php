@@ -34,7 +34,21 @@
         @endforeach
       </nav>
       <div class="sidebar-footer">
-        <button class="theme-switch" type="button" data-toggle-theme data-tooltip="Toggle Theme" data-tooltip-pos="right">
+        @auth
+        <div style="padding: 0.5rem 1rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border-color); display: flex; flex-direction: column;">
+            <span style="font-weight: 600; font-size: 0.9rem;">{{ auth()->user()->name }}</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">{{ auth()->user()->email }}</span>
+        </div>
+        <form method="POST" action="/logout" style="width: 100%;">
+            @csrf
+            <button type="submit" class="theme-switch" style="width: 100%; color: var(--danger-color); justify-content: space-between;" data-tooltip="Logout" data-tooltip-pos="right">
+                <span class="theme-switch-label">Logout</span>
+                <span class="material-symbols-rounded theme-switch-icon">logout</span>
+            </button>
+        </form>
+        @endauth
+
+        <button class="theme-switch" type="button" data-toggle-theme data-tooltip="Toggle Theme" data-tooltip-pos="right" style="margin-top: 0.5rem;">
           <span class="theme-switch-label">Dark Mode</span>
           <span class="material-symbols-rounded theme-switch-icon">dark_mode</span>
         </button>

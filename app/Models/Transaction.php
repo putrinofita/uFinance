@@ -10,10 +10,14 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['type', 'amount', 'date', 'category_id', 'note'])]
+use App\Models\Concerns\BelongsToUser;
+
+#[Fillable(['type', 'amount', 'date', 'category_id', 'note', 'user_id'])]
 class Transaction extends Model
 {
-    use SerializesPlainDates;
+    protected $table = 'transactions';
+
+    use SerializesPlainDates, BelongsToUser;
 
     /**
      * @return array<string, string>

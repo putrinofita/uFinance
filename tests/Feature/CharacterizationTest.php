@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use App\Models\Category;
 use App\Models\Transaction;
@@ -12,11 +12,18 @@ use App\Models\RecurringTransaction;
 
 class CharacterizationTest extends TestCase
 {
+    use DatabaseTransactions;
     public function test_capture_json()
     {
+        $user = \App\Models\User::firstOrCreate(
+            ['email' => 'test@example.com'],
+            ['name' => 'Test', 'password' => bcrypt('password')]
+        );
+        $this->actingAs($user);
+
         // Seed some data first
-        Category::firstOrCreate(['name' => 'Food']);
-        $cat = Category::first();
+        Category::firstOrCreate(['name' => 'Test Food']);
+        $cat = Category::where('name', 'Test Food')->first();
         
         Transaction::create([
             'type' => 'income',

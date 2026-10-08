@@ -9,10 +9,14 @@ use App\Models\Concerns\SerializesPlainDates;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['name', 'target_amount', 'current_amount', 'deadline', 'status'])]
+use App\Models\Concerns\BelongsToUser;
+
+#[Fillable(['name', 'target_amount', 'current_amount', 'deadline', 'status', 'user_id'])]
 class Goal extends Model
 {
-    use SerializesPlainDates;
+    protected $table = 'goals';
+
+    use SerializesPlainDates, BelongsToUser;
 
     /**
      * @return array<string, string>
